@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - VIP CINEMA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Image -->
+    <div class="background-image"></div>
+
+    <!-- Formulaire d'inscription -->
+    <div class="signup-container">
+        <div class="logo-container">
+            <img src="media/logo.png" alt="VIP Cinema Logo" class="signup-logo">
+        </div>
+        <h2>Créer un compte sur <span style="color: #007bff;">VIP CINEMA</span></h2>
+        <form id="signup-form">
+            <input 
+                type="text" 
+                id="name" 
+                placeholder="Nom complet" 
+                required 
+                aria-label="Nom complet"
+            >
+            <input 
+                type="email" 
+                id="email" 
+                placeholder="Adresse e-mail" 
+                required 
+                aria-label="Adresse e-mail"
+            >
+            <div style="position: relative;">
+                <input 
+                    type="password" 
+                    id="password" 
+                    placeholder="Mot de passe" 
+                    required 
+                    aria-label="Mot de passe"
+                    autocomplete="off"
+                >
+                <span id="toggle-password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;">👁️</span>
+            </div>
+            <input 
+                type="password" 
+                id="confirm-password" 
+                placeholder="Confirmer le mot de passe" 
+                required 
+                aria-label="Confirmer le mot de passe"
+                autocomplete="off"
+            >
+            <button type="submit" class="submit-btn" aria-label="S'inscrire">S'inscrire</button>
+            <div id="error-message" style="color: red; margin-top: 10px;"></div>
+        </form>
+    </div>
+
+    <script>
+        // Toggle pour afficher/masquer le mot de passe
+        document.getElementById('toggle-password').addEventListener('click', () => {
+            const passwordInput = document.getElementById('password');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            document.getElementById('toggle-password').textContent = type === 'password' ? '👁️' : '🙈';
+        });
+
+        // Gestion de la soumission du formulaire
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const confirmPassword = document.getElementById('confirm-password').value.trim();
+            const errorMessage = document.getElementById('error-message');
+
+            // Validation locale des champs
+            if (!name || !email || !password || !confirmPassword) {
+                errorMessage.textContent = "Veuillez remplir tous les champs.";
+                return;
+            }
+
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                errorMessage.textContent = "Veuillez entrer une adresse e-mail valide.";
+                return;
+            }
+
+            if (password.length < 8) {
+                errorMessage.textContent = "Le mot de passe doit contenir au moins 8 caractères.";
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                errorMessage.textContent = "Les mots de passe ne correspondent pas.";
+                return;
+            }
+
+            errorMessage.textContent = ""; // Réinitialiser les erreurs
+
+            try {
+                // Envoi de la requête au serveur
+                const response = await fetch('http://localhost:5000/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert("Inscription réussie. Vous pouvez maintenant vous connecter.");
+                    window.location.href = 'index.html'; // Redirection vers la page de connexion
+                } else {
+                    errorMessage.textContent = data.message || "Une erreur est survenue.";
+                }
+            } catch (error) {
+                console.error("Erreur lors de l'inscription : ", error);
+                errorMessage.textContent = "Une erreur est survenue. Veuillez réessayer.";
+            }
+        });
+    </script>
+</body>
+</html>

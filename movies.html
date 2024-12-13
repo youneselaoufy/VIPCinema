@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explorez la liste des films disponibles sur VIP CINEMA.">
+    <meta name="author" content="VIP CINEMA Team">
+    <title>Films - VIP CINEMA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <!-- Navigation Bar -->
+        <div class="navbar">
+            <img src="media/logo.png" alt="VIP Cinema Logo" class="navbar-logo">
+            <nav>
+                <a href="index.html">Accueil</a>
+                <a href="movies.html" class="active">Films</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+        
+        <!-- Hero Section -->
+        <div class="hero-banner">
+            <h1 class="hero-title">Découvrez Nos Films Exclusifs</h1>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar-container">
+            <input type="text" id="search" placeholder="Rechercher un film..." class="search-bar" aria-label="Rechercher un film">
+        </div>
+    </header>
+
+    <!-- Films Container -->
+    <main>
+        <div id="films-container" class="films-container" role="list"></div>
+    </main>
+
+    <!-- Modal Structure -->
+    <div id="film-modal" class="film-modal" style="display: none;" aria-hidden="true">
+        <div class="modal-content">
+            <button class="close-button" aria-label="Fermer">&times;</button>
+            <h2 id="film-title">Titre du film</h2>
+            <p><strong>Genre :</strong> <span id="film-genre"></span></p>
+            <p><strong>Année :</strong> <span id="film-year"></span></p>
+            <p><strong>Description :</strong> <span id="film-description"></span></p>
+            <a id="trailer-link" href="#" target="_blank" class="trailer-link">Voir la bande-annonce</a>
+            <div class="modal-buttons">
+                <button id="rent-button" class="rent-button">Louer ce film</button>
+                <button id="return-button" class="return-button">Retourner ce film</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 VIP CINEMA. Tous droits réservés.</p>
+        <nav>
+            <a href="index.html">Accueil</a> | 
+            <a href="movies.html">Films</a> | 
+            <a href="contact.html">Contact</a>
+        </nav>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="movies.js"></script>
+</body>
+</html>
+
