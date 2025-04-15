@@ -1,0 +1,101 @@
+.signup-container input {
+    width: 90%;
+    padding: 12px;
+    margin: 15px auto;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background: #fff;
+    color: #333;
+    font-size: 1rem;
+    display: block;
+}
+
+
+.signup-link {
+    margin-top: 20px;
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+
+
+.signup-link a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+
+.signup-link a:hover {
+    text-decoration: underline;
+}
+
+
+
+.signup-container input {
+    width: 90%;
+    padding: 10px;
+    margin: 15px auto;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background: #fff;
+    color: #333;
+    font-size: 1rem;
+    display: block;
+}
+
+
+
+.login-container h2 {
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+
+
+.login-container input[type="email"],
+.login-container input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin: 15px auto;
+    border: 1px solid #444;
+    border-radius: 5px;
+    background: #fff;
+    color: #333;
+    font-size: 1rem;
+    display: block;
+}
+
+
+
+.login-container button {
+    width: 90%;
+    padding: 12px;
+    background: linear-gradient(90deg, #007bff, #0056b3);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+
+.login-container button:hover {
+    background: linear-gradient(90deg, #0056b3, #003e7e);
+}
+
+
+
+.search-bar input {
+    width: 100%;
+    padding: 15px;
+    border-radius: 30px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+}

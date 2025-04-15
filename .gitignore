@@ -1,0 +1,48 @@
+# ========================
+# Node.js dependencies
+# ========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+# ========================
+# Python virtual env
+# ========================
+.venv/
+venv/
+ENV/
+env/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# ========================
+# Python logs / test junk
+# ========================
+*.log
+*.sqlite3
+*.db
+*.DS_Store
+
+# ========================
+# VSCode config (optional)
+# ========================
+.vscode/
+.history/
+
+# ========================
+# OS files
+# ========================
+Thumbs.db
+.DS_Store
+
+# ========================
+# Env files (keep secrets out of Git)
+# ========================
+.env
+# ======================
+
+/uploads/

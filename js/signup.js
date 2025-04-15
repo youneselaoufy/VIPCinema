@@ -6,7 +6,14 @@ document.getElementById('signup-form').addEventListener('submit', async (event) 
     const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch('http://localhost:5000/register', {
+        const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+        const BASE_API_URL = isLocal ? 'http://localhost:5000/VIPcinema/api' : '/VIPcinema/api';
+
+
+
+        const response = await fetch(`${BASE_API_URL}/register`, {
+
+
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

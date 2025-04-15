@@ -1,222 +1,166 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const mysql = require('mysql2');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const sqlite3 = require('sqlite3').verbose();
 
-// Load environment variables
 dotenv.config();
 
-// Initialize the app
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Connect to the database
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-});
+// SQLite DB
+const db = new sqlite3.Database('./database.db');
 
-db.connect((err) => {
-    if (err) {
-        console.error('Database connection error:', err.message);
-        process.exit(1); // Stop the server on critical error
-    } else {
-        console.log('Connected to the database.');
-    }
-});
+// Serve static files
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Middleware to verify JWT
+// JWT Middleware
 const verifyToken = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) {
-        return res.status(401).json({ message: 'Token is missing.' });
-    }
-
-    const token = authHeader.split(' ')[1];
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ message: 'Invalid token.' });
-        }
-        req.user = decoded; // Attach decoded token data to request
-        next();
-    });
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ message: 'Token is missing.' });
+  const token = authHeader.split(' ')[1];
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) return res.status(401).json({ message: 'Invalid token.' });
+    req.user = decoded;
+    next();
+  });
 };
 
-// User login
-app.post('/login', (req, res) => {
-    const { email, password } = req.body;
+// Multer setup
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const dir = path.join(__dirname, 'uploads');
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+    cb(null, dir);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, `user_${req.user.id}${ext}`);
+  }
+});
+const upload = multer({ storage });
 
-    if (!email || !password) {
-        return res.status(400).json({ message: 'Email and password are required.' });
+// API Router
+const apiRouter = express.Router();
+
+//  Login
+apiRouter.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
+    if (err) return res.status(500).json({ message: 'Server error.' });
+    if (!user) return res.status(404).json({ message: 'User not found.' });
+    bcrypt.compare(password, user.password, (err, isMatch) => {
+      if (err || !isMatch) return res.status(401).json({ message: 'Incorrect password.' });
+      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+      res.json({ message: 'Login successful.', token });
+    });
+  });
+});
+
+//  Register
+apiRouter.post('/register', (req, res) => {
+  const { name, email, password } = req.body;
+  db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
+    if (user) return res.status(409).json({ message: 'Email is already registered.' });
+    bcrypt.hash(password, 10, (err, hash) => {
+      db.run('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, hash], err => {
+        if (err) return res.status(500).json({ message: 'Registration error.' });
+        res.status(201).json({ message: 'Registration successful.' });
+      });
+    });
+  });
+});
+
+//  Get Movies from TMDb API — handled client-side; no DB movies route needed here
+
+//  Rent a Movie
+apiRouter.post('/rent', verifyToken, (req, res) => {
+  const { filmId } = req.body;
+  if (!filmId) return res.status(400).json({ message: 'Film ID required.' });
+  db.get('SELECT COUNT(*) AS count FROM rentals WHERE user_id = ? AND return_date IS NULL', [req.user.id], (err, result) => {
+    if (result.count >= 5) {
+      return res.status(400).json({ message: 'Cannot rent more than 5 movies at a time.' });
     }
-
-    const query = 'SELECT * FROM users WHERE email = ?';
-    db.query(query, [email], (err, results) => {
-        if (err) return res.status(500).json({ message: 'Server error.' });
-        if (results.length === 0) return res.status(404).json({ message: 'User not found.' });
-
-        const user = results[0];
-        bcrypt.compare(password, user.password, (err, isMatch) => {
-            if (err) return res.status(500).json({ message: 'Server error.' });
-            if (!isMatch) return res.status(401).json({ message: 'Incorrect password.' });
-
-            // Generate JWT
-            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.json({ message: 'Login successful.', token });
-        });
+    db.get('SELECT * FROM rentals WHERE user_id = ? AND film_id = ? AND return_date IS NULL', [req.user.id, filmId], (err, row) => {
+      if (row) return res.status(400).json({ message: 'You have already rented this movie.' });
+      db.run('INSERT INTO rentals (user_id, film_id, rental_date) VALUES (?, ?, datetime("now"))', [req.user.id, filmId], err => {
+        if (err) return res.status(500).json({ message: 'Rent failed.' });
+        res.json({ message: 'Film rented successfully.' });
+      });
     });
+  });
 });
 
-// Fetch all movies
-app.get('/movies', verifyToken, (req, res) => {
-    const query = 'SELECT * FROM films WHERE available_copies > 0';
-    db.query(query, (err, results) => {
-        if (err) return res.status(500).json({ message: 'Server error.' });
-        res.json(results);
-    });
+// Return a Movie
+apiRouter.post('/return', verifyToken, (req, res) => {
+  const { filmId } = req.body;
+  db.run('UPDATE rentals SET return_date = datetime("now") WHERE user_id = ? AND film_id = ? AND return_date IS NULL', [req.user.id, filmId], function(err) {
+    if (err) return res.status(500).json({ message: 'Return failed.' });
+    if (this.changes === 0) return res.status(404).json({ message: 'No active rental found.' });
+    res.json({ message: 'Film returned successfully!' });
+  });
 });
 
-// Rent a movie
-app.post('/rent', verifyToken, (req, res) => {
-    const { filmId } = req.body;
-
-    if (!filmId) {
-        return res.status(400).json({ message: 'Film ID is required.' });
-    }
-
-    const checkRentalQuery = `
-        SELECT COUNT(*) AS rentals_count 
-        FROM rentals 
-        WHERE user_id = ? AND return_date IS NULL;
-    `;
-
-    const checkDuplicateRentalQuery = `
-        SELECT * 
-        FROM rentals 
-        WHERE user_id = ? AND film_id = ? AND return_date IS NULL;
-    `;
-
-    db.query(checkRentalQuery, [req.user.id], (err, rentalCountResults) => {
-        if (err) return res.status(500).json({ message: 'Server error.' });
-
-        if (rentalCountResults[0].rentals_count >= 5) {
-            return res.status(400).json({ message: 'You cannot rent more than 5 movies at a time.' });
-        }
-
-        db.query(checkDuplicateRentalQuery, [req.user.id, filmId], (err, duplicateResults) => {
-            if (err) return res.status(500).json({ message: 'Server error.' });
-
-            if (duplicateResults.length > 0) {
-                return res.status(400).json({ message: 'You have already rented this movie.' });
-            }
-
-            const checkAvailableCopiesQuery = 'SELECT * FROM films WHERE id = ?';
-            db.query(checkAvailableCopiesQuery, [filmId], (err, filmResults) => {
-                if (err) return res.status(500).json({ message: 'Server error.' });
-                if (filmResults.length === 0) return res.status(404).json({ message: 'Film not found.' });
-
-                const film = filmResults[0];
-                if (film.available_copies <= 0) {
-                    return res.status(400).json({ message: 'No available copies for this film.' });
-                }
-
-                const insertRentalQuery = `
-                    INSERT INTO rentals (user_id, film_id, rental_date) 
-                    VALUES (?, ?, NOW());
-                `;
-
-                const updateFilmCopiesQuery = `
-                    UPDATE films SET available_copies = available_copies - 1 WHERE id = ?;
-                `;
-
-                db.query(insertRentalQuery, [req.user.id, filmId], (err) => {
-                    if (err) return res.status(500).json({ message: 'Server error.' });
-
-                    db.query(updateFilmCopiesQuery, [filmId], (err) => {
-                        if (err) return res.status(500).json({ message: 'Server error.' });
-                        res.status(200).json({ message: `Film "${film.title}" rented successfully.` });
-                    });
-                });
-            });
-        });
-    });
+// 👤 Profile
+apiRouter.get('/profile', verifyToken, (req, res) => {
+  db.get('SELECT name, email, profile_picture FROM users WHERE id = ?', [req.user.id], (err, row) => {
+    if (err) return res.status(500).json({ message: 'Erreur serveur' });
+    if (!row) return res.status(404).json({ message: 'Utilisateur introuvable' });
+    res.json(row);
+  });
 });
-// User registration
-app.post('/register', (req, res) => {
-    const { name, email, password } = req.body;
 
-    if (!name || !email || !password) {
-        return res.status(400).json({ message: 'All fields are required.' });
-    }
+//  Upload Profile Picture
+apiRouter.post('/upload-profile-picture', verifyToken, upload.single('profilePicture'), (req, res) => {
+  const imagePath = `/uploads/${req.file.filename}`;
 
-    const queryCheckUser = 'SELECT * FROM users WHERE email = ?';
-    db.query(queryCheckUser, [email], (err, results) => {
-        if (err) return res.status(500).json({ message: 'Server error.' });
-        if (results.length > 0) return res.status(409).json({ message: 'Email is already registered.' });
-
-        bcrypt.hash(password, 10, (err, hash) => {
-            if (err) return res.status(500).json({ message: 'Password hashing error.' });
-
-            const queryInsertUser = 'INSERT INTO users (name, email, password) VALUES (?, ?, ?)';
-            db.query(queryInsertUser, [name, email, hash], (err) => {
-                if (err) return res.status(500).json({ message: 'Server error.' });
-                res.status(201).json({ message: 'Registration successful.' });
-            });
-        });
-    });
-});
-// Endpoint pour retourner un film
-app.post('/return', verifyToken, (req, res) => {
-    const { filmId } = req.body;
-
-    if (!filmId) {
-        return res.status(400).json({ message: 'Film ID manquant.' });
-    }
-
-    // Vérifier si l'utilisateur a réellement loué ce film
-    const checkRentalQuery = `
-        SELECT * 
-        FROM rentals 
-        WHERE user_id = ? AND film_id = ? AND return_date IS NULL;
-    `;
-
-    db.query(checkRentalQuery, [req.user.id, filmId], (err, results) => {
-        if (err) return res.status(500).json({ message: 'Erreur serveur.' });
-        if (results.length === 0) return res.status(404).json({ message: 'Aucune location active trouvée pour ce film.' });
-
-        // Mettre à jour la date de retour
-        const updateRentalQuery = `
-            UPDATE rentals 
-            SET return_date = NOW() 
-            WHERE user_id = ? AND film_id = ? AND return_date IS NULL;
-        `;
-
-        db.query(updateRentalQuery, [req.user.id, filmId], (err) => {
-            if (err) return res.status(500).json({ message: 'Erreur lors de la mise à jour de la location.' });
-
-            // Incrémenter le nombre de copies disponibles
-            const incrementCopiesQuery = `
-                UPDATE films 
-                SET available_copies = available_copies + 1 
-                WHERE id = ?;
-            `;
-
-            db.query(incrementCopiesQuery, [filmId], (err) => {
-                if (err) return res.status(500).json({ message: 'Erreur lors de la mise à jour des copies disponibles.' });
-                res.status(200).json({ message: 'Film retourné avec succès !' });
-            });
-        });
-    });
+  db.run('UPDATE users SET profile_picture = ? WHERE id = ?', [imagePath, req.user.id], err => {
+    if (err) return res.status(500).json({ message: 'Failed to update profile picture.' });
+    res.json({ message: 'Profile picture updated successfully.', path: imagePath });
+  });
+  
 });
 
 
-// Start the server
+//  Update Profile
+apiRouter.put('/update-profile', verifyToken, (req, res) => {
+  const { name, email, password } = req.body;
+  if (!name || !email) return res.status(400).json({ message: 'Name and email are required.' });
+
+  const updateUser = () => {
+    db.run('UPDATE users SET name = ?, email = ? WHERE id = ?', [name, email, req.user.id], err => {
+      if (err) return res.status(500).json({ message: 'Error updating user.' });
+      res.json({ message: 'Profile updated.' });
+    });
+  };
+
+  if (password) {
+    bcrypt.hash(password, 10, (err, hash) => {
+      if (err) return res.status(500).json({ message: 'Error hashing password.' });
+      db.run('UPDATE users SET password = ? WHERE id = ?', [hash, req.user.id], err => {
+        if (err) return res.status(500).json({ message: 'Error updating password.' });
+        updateUser();
+      });
+    });
+  } else {
+    updateUser();
+  }
+});
+
+// Mount API
+app.use('/VIPCinema/api', apiRouter);
+
+// Serve Frontend
+app.use('/VIPCinema', express.static(path.join(__dirname, 'public')));
+
+// Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-    console.log(`Server started on port ${PORT}`);
+  console.log(` Server running at http://localhost:${PORT}`);
 });

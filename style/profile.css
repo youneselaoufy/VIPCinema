@@ -1,0 +1,209 @@
+/* ------------------- Global & Profile Page Styles ------------------- */
+body.profile-page {
+    background: url('../media/image.png') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+  }
+  
+  /* ------------------- Profile Container ------------------- */
+  .profile-container {
+    max-width: 640px;
+    margin: 50px auto;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  /* ------------------- Profile Card ------------------- */
+  .profile-card {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .profile-card h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+  }
+  
+  .profile-card p {
+    font-size: 18px;
+    margin: 5px 0;
+    color: #222;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* ------------------- Profile Picture ------------------- */
+  .profile-pic {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 50%;
+    padding: 4px;
+    background: linear-gradient(135deg, #00c3ff, #ffff1c);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    margin: 0 auto 15px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .profile-pic:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* ------------------- Upload Button ------------------- */
+  #uploadBtn {
+    display: inline-block;
+    background: linear-gradient(90deg, #007bff, #00c3ff);
+    color: white;
+    font-weight: 600;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  #uploadBtn:hover {
+    background: linear-gradient(90deg, #0056b3, #00aaff);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(0, 195, 255, 0.4);
+  }
+  
+  .profile-picture-section {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  #preview-container {
+    margin-top: 10px;
+  }
+  
+  /* ------------------- Update Info Section ------------------- */
+  .update-info-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .update-info-section h2 {
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #222;
+    position: relative;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
+  }
+  
+  .update-info-section h2::after {
+    content: '';
+    display: block;
+    margin: 8px auto 0;
+    width: 40px;
+    height: 3px;
+    background: #007bff;
+    border-radius: 10px;
+  }
+  
+  #updateForm {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  
+  #updateForm label {
+    flex: 1 1 100%;
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  }
+  
+  #updateForm input {
+    flex: 1 1 100%;
+    padding: 12px 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(4px);
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  #updateForm input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.6);
+  }
+  
+  #updateForm button {
+    padding: 14px;
+    background: linear-gradient(90deg, #0066ff, #00c3ff);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  #updateForm button:hover {
+    background: linear-gradient(90deg, #0050cc, #00aaff);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 20px rgba(0, 102, 255, 0.4);
+  }
+  
+  /* ------------------- Logout Button ------------------- */
+  .logout-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .logout-button:hover {
+    background-color: #cc0000;
+  }
+  
+  /* ------------------- Responsive ------------------- */
+  @media (max-width: 600px) {
+    .profile-container {
+      padding: 20px;
+    }
+  
+    .profile-card h1 {
+      font-size: 28px;
+    }
+  
+    .profile-card p {
+      font-size: 16px;
+    }
+  
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+    }
+  
+    #updateForm {
+      flex-direction: column;
+    }
+  }
+  

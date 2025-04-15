@@ -4,31 +4,37 @@ document.addEventListener("DOMContentLoaded", function () {
     const fadeOverlay = document.querySelector(".fade-overlay");
     const loginContainer = document.querySelector(".login-container");
 
-    // Event listener for when the video ends
+    if (!video) {
+        console.warn("Background video element not found.");
+        return;
+    }
+
     video.addEventListener("ended", function () {
         console.log("Video ended");
 
-        // Activate the fade-to-black overlay
+        // Fade to black
         fadeOverlay.classList.add("active");
 
-        // Wait for the fade-to-black to complete
+        // Wait for fade to complete (match CSS duration)
         setTimeout(() => {
             console.log("Transition started");
 
             // Hide the video container
             videoContainer.classList.add("hidden");
 
-            // Set the background image
+            // Set the John Wick image as background
             document.body.style.backgroundImage = "url('media/profile.png')";
             document.body.style.backgroundSize = "cover";
             document.body.style.backgroundPosition = "center";
+            document.body.style.backgroundRepeat = "no-repeat";
 
-            // Make the login container visible
+            // Show the login form
             loginContainer.classList.add("visible");
-            console.log("Login container displayed");
 
-            // Remove the fade overlay
+            // Remove the black overlay
             fadeOverlay.classList.remove("active");
-        }, 1500); // Match the fade duration in CSS
+
+            console.log("Login container displayed");
+        }, 1500); // Make sure this matches your CSS fade time
     });
 });

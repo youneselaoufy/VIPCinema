@@ -1,0 +1,8 @@
+.main-image {
+    width: 100%; /* Ajuster à la largeur du conteneur */
+    max-width: 1200px; /* Limiter la taille maximale */
+    height: auto; /* Maintenir les proportions de l'image */
+    border-radius: 15px; /* Coins arrondis */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Ajout d'une ombre */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animations au survol */
+}

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +12,7 @@
         <img src="media/logo.png" alt="Logo VIP Cinema - Accueil" class="logo">
     </header>
 
-    <!-- Superposition de transition -->
+    <!-- Superposition de transition noire -->
     <div class="fade-overlay"></div>
 
     <!-- Vidéo de fond -->
@@ -22,6 +22,10 @@
             Votre navigateur ne supporte pas les vidéos.
         </video>
     </div>
+
+    <!-- Image qui apparaît après la transition (John Wick) -->
+    <img id="profile-image" src="media/profile.png" alt="John Wick" 
+         style="display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 3;">
 
     <!-- Formulaire de connexion -->
     <div class="login-container">
@@ -53,7 +57,7 @@
         </div>
     </div>
 
-    <!-- Script de gestion de la soumission du formulaire -->
+    <!-- Script de connexion -->
     <script>
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -68,7 +72,13 @@
             }
 
             try {
-                const response = await fetch('http://localhost:5000/login', {
+                const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+                const BASE_API_URL = isLocal ? 'http://localhost:5000/VIPcinema/api' : '/VIPcinema/api';
+;
+
+
+                const response = await fetch(`${BASE_API_URL}/login`, {
+
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
@@ -81,7 +91,7 @@
                     errorMessage.textContent = "Connexion réussie. Redirection...";
                     setTimeout(() => {
                         sessionStorage.setItem('token', data.token);
-                        window.location.href = 'movies.html'; // Redirection vers la page des films
+                        window.location.href = 'movies.html';
                     }, 1500);
                 } else {
                     errorMessage.textContent = data.message || "Erreur lors de la connexion.";
@@ -92,5 +102,8 @@
             }
         });
     </script>
+
+    <!-- Script de transition -->
+    <script src="js/transition.js"></script>
 </body>
 </html>
