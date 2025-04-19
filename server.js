@@ -173,12 +173,13 @@ apiRouter.put('/update-profile', verifyToken, (req, res) => {
 app.use('/VIPCinema/api', apiRouter);
 
 // Frontend static files
-app.use('/VIPCinema', express.static(path.join(__dirname, 'public')));
+app.use('/VIPCinema', express.static(__dirname));
 
 //  direct access to /VIPCinema without index.html
-app.get('/VIPCinema', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+app.get('/VIPCinema/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
+
 
 // Start
 app.listen(5000, '0.0.0.0', () => {
