@@ -189,30 +189,30 @@ apiRouter.put('/update-profile', verifyToken, (req, res) => {
     updateUser();
   }
 });
-// Mount API first
+// Mount API routes
 app.use('/VIPCinema/api', apiRouter);
 
-// Serve static files from root directory under /VIPCinema
-app.use('/VIPCinema', express.static(__dirname));
+// Serve static files (HTML, CSS, JS, etc.)
+app.use('/VIPCinema', express.static(path.join(__dirname)));
 
-// Serve index.html when hitting /VIPCinema/
+// Route: serve index.html at /VIPCinema/
 app.get('/VIPCinema/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Serve other .html pages in /VIPCinema/:page
+// Route: serve other .html files (signup.html, etc.)
 app.get('/VIPCinema/:page', (req, res) => {
   const file = req.params.page;
+  const fullPath = path.join(__dirname, file);
 
-  if (file.endsWith('.html') && fs.existsSync(path.join(__dirname, file))) {
-    res.sendFile(path.join(__dirname, file));
+  if (file.endsWith('.html') && fs.existsSync(fullPath)) {
+    res.sendFile(fullPath);
   } else {
     res.status(404).send('Page Not Found');
   }
 });
 
-
-//  Start the server
+// IMPORTANT: Remove any duplicate app.listen or app.get('/')
 app.listen(5000, '0.0.0.0', () => {
   console.log('Server running on 0.0.0.0:5000');
 });
