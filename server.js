@@ -174,6 +174,7 @@ app.use('/VIPCinema/api', apiRouter);
 
 // Serve Frontend
 app.use('/VIPCinema', express.static(path.join(__dirname, 'public')));
+app.use('/', express.static(path.join(__dirname, 'public')));
 
 // Start Server
 app.listen(5000, '0.0.0.0', () => {
