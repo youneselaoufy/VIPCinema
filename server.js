@@ -169,13 +169,23 @@ apiRouter.put('/update-profile', verifyToken, (req, res) => {
   }
 });
 
-// API
+// Mount API
 app.use('/VIPCinema/api', apiRouter);
 
-// Serve static files from VIPCinema base
+// Serve static files from root directory
 app.use('/VIPCinema', express.static(__dirname));
 
-// Explicitly handle root of /VIPCinema
+// Route /VIPCinema/ to index.html explicitly
 app.get('/VIPCinema/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Route other .html files inside VIPCinema
+app.get('/VIPCinema/:page', (req, res) => {
+  const file = req.params.page;
+  if (file.endsWith('.html')) {
+    res.sendFile(path.join(__dirname, file));
+  } else {
+    res.status(404).send('Page Not Found');
+  }
 });
