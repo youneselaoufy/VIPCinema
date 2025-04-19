@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
+  <base id="dynamic-base" href="/VIPCinema/">
+  <script>
+    if (location.hostname.includes('localhost') || location.hostname === '127.0.0.1') {
+      document.getElementById('dynamic-base').href = '/';
+    }
+  </script>  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="Explorez la liste des films disponibles sur VIP CINEMA." />
   <meta name="author" content="VIP CINEMA Team" />
   <title>Films - VIP CINEMA</title>
   <link rel="stylesheet" href="style.css" />
-  
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <header>
-    <div class="navbar">
-      <img src="media/logo.png" alt="VIP Cinema Logo" class="navbar-logo" />
-      <nav>
-        <a href="profile.html">Profil</a>
-        <a href="movies.html" class="active">Films</a>
-        <a href="#" id="logout-button">Déconnexion</a>
-      </nav>
-    </div>
 
-    <div class="hero-banner">
+  <!-- Sticky Navbar (outside header) -->
+  <div class="navbar sticky-navbar">
+    <img src="media/logo.png" alt="VIP Cinema Logo" class="navbar-logo" />
+    <nav>
+      <a href="profile.html">Profil</a>
+      <a href="movies.html" class="active">Films</a>
+      <a href="about.html">À propos</a>
+      <a href="#" id="logout-button">Déconnexion</a>
+    </nav>
+  </div>
+
+  <!-- Banner & Search Section -->
+  <header>
+    <div class="hero-banner banner">
       <h1 class="hero-title">Découvrez Nos Films Exclusifs</h1>
     </div>
 
@@ -36,11 +44,14 @@
     </div>
   </header>
 
+  <!-- Main Movies Display -->
   <main>
     <div id="films-container" class="films-container" role="list"></div>
+    <div id="pagination-controls" class="pagination-controls"></div>
   </main>
 
-  <div id="film-modal" class="film-modal" aria-hidden="true">
+  <!-- Modal -->
+  <div id="film-modal" class="film-modal" aria-hidden="true" role="dialog">
     <div class="modal-content">
       <button class="close-button" aria-label="Fermer">&times;</button>
       <h2 id="film-title">Titre du film</h2>
@@ -50,7 +61,6 @@
 
       <div class="trailer-container">
         <div id="trailer-loader" class="spinner" style="display: none;"></div>
-
         <iframe 
           id="trailer-frame"
           width="100%"
@@ -68,23 +78,25 @@
     </div>
   </div>
 
+  <!-- Pagination UI -->
+  <div id="pagination" class="pagination"></div>
+
+  <!-- Footer -->
   <footer>
     <p>&copy; 2024 VIP CINEMA by Younes El Aoufy. Tous droits réservés.</p>
-    <p style="display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 12px;">
-      <img src="media/TMDB.svg" alt="TMDb Logo" style="height: 24px;" />
+    <p class="tmdb-note">
+      <img src="media/TMDB.svg" alt="TMDb Logo" class="tmdb-logo" />
       <span>This product uses the TMDb API but is not endorsed or certified by TMDb.</span>
     </p>
   </footer>
-  
 
+  <!-- Scripts -->
   <script src="js/movies.js"></script>
   <script>
-    // simple logout
-    function logout() {
+    document.getElementById('logout-button').addEventListener('click', function () {
       sessionStorage.removeItem('token');
       window.location.href = 'index.html';
-    }
-    document.getElementById('logout-button').addEventListener('click', logout);
+    });
   </script>
 </body>
 </html>

@@ -132,7 +132,20 @@ header {
     color: #666;
 }
 
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background-color: #000; /* Ensure it's opaque */
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* optional shadow for clarity */
+  }
+  
 
+  
 
 .navbar-logo {
     height: 60px;
@@ -287,4 +300,26 @@ footer {
 
 .trailer-button:hover {
     background-color: var(--secondary-color);
-}
+}.pagination-controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 20px 0;
+  }
+  
+  .page-btn {
+    background: #222;
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .page-btn.active,
+  .page-btn:hover {
+    background: #007bff;
+  }
+  

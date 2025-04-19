@@ -1,8 +1,245 @@
-.main-image {
-    width: 100%; /* Ajuster à la largeur du conteneur */
-    max-width: 1200px; /* Limiter la taille maximale */
-    height: auto; /* Maintenir les proportions de l'image */
-    border-radius: 15px; /* Coins arrondis */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Ajout d'une ombre */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animations au survol */
-}
+@media (max-width: 768px) {
+    body {
+      padding: 0 10px;
+    }
+  
+    /* NAVBAR */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #111;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #333;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+  
+    .navbar-logo {
+      width: 60px;
+      margin-bottom: 10px;
+    }
+  
+    .navbar nav {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      max-width: 280px;
+      width: 100%;
+      justify-content: center;
+    }
+  
+    .navbar nav a {
+      background-color: #1f1f1f;
+      color: white;
+      padding: 10px 0;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 14px;
+      text-decoration: none;
+      transition: background-color 0.25s ease;
+    }
+  
+    .navbar nav a.active {
+      background-color: #007bff;
+    }
+  
+    .navbar nav a:hover {
+      background-color: #333;
+    }
+  
+    /* HERO BANNER */
+    .hero-banner {
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), url('../media/banner.png');
+      background-size: cover;
+      background-position: center;
+      border-radius: 12px;
+      color: #fff;
+      padding: 30px 16px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+  
+    .hero-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+  
+    /* SEARCH BAR */
+    .search-bar-container input,
+    .search-bar {
+      width: 100%;
+      font-size: 14px;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 8px;
+      border: none;
+    }
+  
+    /* FILM CARDS */
+    .films-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+      padding: 0 10px 40px;
+    }
+  
+    .film-card {
+      background-color: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+  
+    .film-image {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+  
+    .film-card-content {
+      padding: 12px;
+    }
+  
+    .film-card-content h3 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+  
+    .film-card-content p {
+      font-size: 13px;
+      margin: 2px 0;
+      color: #555;
+    }
+  
+    .details-button {
+      margin-top: 10px;
+      width: 100%;
+      padding: 10px;
+      font-size: 14px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  
+    .details-button:hover {
+      background-color: #0056b3;
+    }
+  
+    /* MODAL FIX */
+    .film-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.85);
+      z-index: 9999;
+      overflow-y: auto;
+    }
+  
+    .modal-content {
+      position: relative;
+      background-color: #1e1e1e;
+      color: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+  
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      background: none;
+      border: none;
+      font-size: 26px;
+      color: white;
+      cursor: pointer;
+    }
+  
+    .modal-content h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
+  
+    .modal-content p {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+  
+    .trailer-container {
+      margin: 16px 0;
+    }
+  
+    .trailer-container iframe {
+      width: 100%;
+      height: 200px;
+      border-radius: 10px;
+      border: none;
+    }
+  
+    .modal-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+  
+    .modal-buttons button {
+      padding: 12px;
+      font-size: 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  
+    .rent-button {
+      background-color: #28a745;
+      color: white;
+    }
+  
+    .return-button {
+      background-color: #6c757d;
+      color: white;
+    }
+  
+    /* FOOTER */
+    footer {
+      text-align: center;
+      font-size: 12px;
+      padding: 15px 10px;
+    }
+  
+    .tmdb-note {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      text-align: center;
+    }
+  
+    .tmdb-logo {
+      height: 24px;
+    }
+  }
+  

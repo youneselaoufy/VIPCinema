@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+    <base id="dynamic-base" href="/VIPCinema/">
+        <script>
+          if (location.hostname.includes('localhost') || location.hostname === '127.0.0.1') {
+            document.getElementById('dynamic-base').href = '/';
+          }
+        </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inscription - VIP CINEMA</title>

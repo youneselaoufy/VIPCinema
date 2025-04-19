@@ -237,3 +237,18 @@ body {
   }
 }
 
+.tmdb-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 12px;
+  text-align: center;
+  padding: 20px 10px;
+}
+
+.tmdb-logo {
+  height: 24px; 
+  object-fit: contain;
+}

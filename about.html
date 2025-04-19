@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <base id="dynamic-base" href="/VIPCinema/">
+        <script>
+          if (location.hostname.includes('localhost') || location.hostname === '127.0.0.1') {
+            document.getElementById('dynamic-base').href = '/';
+          }
+        </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>À propos – VIP CINEMA</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style/about.css" />
+</head>
+<body style="background: url('media/image.png') no-repeat center center fixed; background-size: cover;">
+
+  <header>
+    <div class="navbar">
+      <img src="media/logo.png" alt="VIP Cinema Logo" class="navbar-logo" />
+      <nav>
+        <a href="movies.html">Films</a>
+        <a href="profile.html">Profil</a>
+        <a href="about.html" class="active">À propos</a>
+        <a href="#" onclick="logout()">Déconnexion</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="about-container">
+    <h1>Bienvenue dans l’univers de VIP CINEMA</h1>
+  
+    <p>
+      VIP CINEMA est bien plus qu’un simple projet scolaire — c’est une plateforme fictive pensée pour recréer l’expérience immersive d’un cinéma à la maison. Ici, les utilisateurs peuvent explorer une large sélection de films, les louer en un clic, et profiter de bandes-annonces directement intégrées à l’interface.
+    </p>
+  
+    <p>
+      Ce site a été conçu dans un cadre académique afin de mettre en pratique des compétences concrètes : 
+      authentification sécurisée via JWT, gestion de profils utilisateurs, intégration d’API externes comme celle de 
+      <a href="https://www.themoviedb.org/" target="_blank">TMDb</a>, et interactions dynamiques avec des données en temps réel.
+    </p>
+  
+    <p>
+      Pour la partie technique, VIP CINEMA repose actuellement sur une base de données SQLite, idéale pour le développement local. L’architecture est toutefois pensée pour évoluer facilement vers des systèmes plus robustes comme PostgreSQL ou MySQL, en vue d’un déploiement en production.
+    </p>
+  
+    <p>
+      Ce projet est entièrement éducatif : il n’est ni affilié ni soutenu par TMDb ou par toute autre société liée au cinéma.
+    </p>
+  
+    <p>
+      Merci de faire un tour sur VIP CINEMA, et bon visionnage !
+    </p>
+    <div class="github-section">
+      <h2>Voir le code source</h2>
+      <p>
+        Ce projet est open source et disponible sur GitHub. Vous pouvez consulter le code, proposer des améliorations ou simplement explorer la structure du projet.
+      </p>
+      <a href="https://github.com/youneselaoufy/VIPCinema" target="_blank" class="github-button">
+        Accéder au dépôt GitHub
+      </a>
+    </div>
+    
+  </main>
+  
+  <footer>
+    <p>&copy; 2024 VIP CINEMA by Younes El Aoufy. Tous droits réservés.</p>
+  </footer>
+
+  <script>
+    function logout() {
+      sessionStorage.removeItem('token');
+      window.location.href = 'index.html';
+    }
+  </script>
+  
+</body>
+</html>

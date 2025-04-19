@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require('express')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
@@ -115,6 +115,22 @@ apiRouter.get('/profile', verifyToken, (req, res) => {
     res.json(row);
   });
 });
+
+//  Get User's Rented Movies
+apiRouter.get('/rented-movies', verifyToken, (req, res) => {
+  db.all(
+    `SELECT film_id, rental_date 
+     FROM rentals 
+     WHERE user_id = ? AND return_date IS NULL 
+     ORDER BY rental_date DESC`,
+    [req.user.id],
+    (err, rows) => {
+      if (err) return res.status(500).json({ message: 'Erreur lors de la récupération des films loués.' });
+      res.json(rows);
+    }
+  );
+});
+
 
 //  Upload Profile Picture
 apiRouter.post('/upload-profile-picture', verifyToken, upload.single('profilePicture'), (req, res) => {

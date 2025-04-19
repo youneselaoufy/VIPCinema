@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+  <base id="dynamic-base" href="/VIPCinema/">
+        <script>
+          if (location.hostname.includes('localhost') || location.hostname === '127.0.0.1') {
+            document.getElementById('dynamic-base').href = '/';
+          }
+        </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mon Profil - VIP CINEMA</title>
@@ -14,6 +20,8 @@
       <nav>
         <a href="movies.html">Films</a>
         <a href="profile.html" class="active">Profil</a>
+        <a href="about.html">À propos</a>
+
         <a href="#" id="logout-button">Déconnexion</a>
       </nav>
     </div>
@@ -27,17 +35,14 @@
       <p><strong>Email :</strong> <span id="user-email">Chargement...</span></p>
     </div>
 
-    <!-- Profile Picture Upload Section -->
-    <div class="profile-picture-section">
-      <h2>Modifier la photo de profil</h2>
-      <label for="profilePicture">Choisissez une image :</label>
-      <input type="file" id="profilePicture" name="profilePicture" accept="image/*">
-      <button id="uploadBtn">Upload</button>
-      <div id="preview-container">
-        <img id="profile-preview" src="" alt="Aperçu" style="max-width: 200px; display: none;">
-      </div>
+    <div class="upload-wrapper">
+      <label for="profilePicture" class="custom-file-label">
+        <span id="file-name">Choisissez une image</span>
+        <input type="file" id="profilePicture" name="profilePicture" accept="image/*" hidden>
+      </label>
+      <button id="uploadBtn" class="upload-btn">Upload</button>
     </div>
-
+    
     <!-- Update Info Form -->
     <div class="update-info-section">
       <h2>Modifier mes informations</h2>
@@ -51,6 +56,13 @@
         <button type="submit">Enregistrer</button>
       </form>
     </div>
+    <div class="rented-movies-section">
+      <h2>Mes Films Loués</h2>
+      <ul id="rented-movies-list">
+        <li>Chargement des films...</li>
+      </ul>
+    </div>
+    
   </main>
   <footer>
     <p>&copy; 2024 VIP CINEMA. Tous droits réservés.</p>

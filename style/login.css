@@ -99,3 +99,32 @@
     border: 1px solid #ddd;
     font-size: 16px;
 }
+
+/* === LOGIN TOP-LEFT LOGO FIX === */
+/* Main header (logo top-left) */
+.main-header {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 999;
+  }
+  
+  .main-header .logo {
+    width: 70px;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 5px rgba(0,0,0,0.6));
+  }
+  
+  @media (max-width: 768px) {
+    .main-header {
+      top: 10px;
+      left: 10px;
+    }
+  
+    .main-header .logo {
+      width: 60px;
+    }
+  }
+  
+  
