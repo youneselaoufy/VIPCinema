@@ -189,3 +189,9 @@ app.get('/VIPCinema/:page', (req, res) => {
     res.status(404).send('Page Not Found');
   }
 });
+
+
+// START SERVER 
+app.listen(5000, '0.0.0.0', () => {
+  console.log('Server running on 0.0.0.0:5000');
+});
