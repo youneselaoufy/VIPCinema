@@ -172,15 +172,15 @@ apiRouter.put('/update-profile', verifyToken, (req, res) => {
 // Mount API
 app.use('/VIPCinema/api', apiRouter);
 
-// Serve static files from root directory
-app.use('/VIPCinema', express.static(__dirname));
+// Serve static files directly from root
+app.use(express.static(__dirname));
 
-// Route /VIPCinema/ to index.html explicitly
+// Route /VIPCinema/ to index.html
 app.get('/VIPCinema/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Route other .html files inside VIPCinema
+// Route for other HTML pages
 app.get('/VIPCinema/:page', (req, res) => {
   const file = req.params.page;
   if (file.endsWith('.html')) {
@@ -188,9 +188,4 @@ app.get('/VIPCinema/:page', (req, res) => {
   } else {
     res.status(404).send('Page Not Found');
   }
-});
-
-// START SERVER 
-app.listen(5000, '0.0.0.0', () => {
-  console.log('Server running on 0.0.0.0:5000');
 });
