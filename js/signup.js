@@ -7,7 +7,8 @@ document.getElementById('signup-form').addEventListener('submit', async (event) 
 
     try {
         const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-        const BASE_API_URL = isLocal ? 'http://localhost:5000/VIPcinema/api' : '/VIPcinema/api';
+        const BASE_API_URL = isLocal ? 'http://localhost:5000/VIPCinema/api' : '/VIPCinema/api';
+
 
 
 

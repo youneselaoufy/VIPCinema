@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const API_KEY = '17f97fb3319b9e6f62ffe6a5eb45087a';
   const GENRE_API_URL = `https://api.themoviedb.org/3/genre/movie/list?language=fr-FR&api_key=${API_KEY}`;
   const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-  const BASE_API_URL = isLocal ? 'http://localhost:5000/VIPcinema/api' : '/VIPcinema/api';
+  const BASE_API_URL = isLocal ? 'http://localhost:5000/VIPCinema/api' : '/VIPCinema/api';
 
   const fetchMultiplePages = async (pageCount = 5) => {
     let results = [];
