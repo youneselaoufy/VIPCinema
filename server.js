@@ -169,14 +169,18 @@ apiRouter.put('/update-profile', verifyToken, (req, res) => {
   }
 });
 
-// Mount API
+/// API
 app.use('/VIPCinema/api', apiRouter);
 
-// Serve Frontend
+// Frontend static files
 app.use('/VIPCinema', express.static(path.join(__dirname, 'public')));
-app.use('/', express.static(path.join(__dirname, 'public')));
 
-// Start Server
+//  direct access to /VIPCinema without index.html
+app.get('/VIPCinema', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Start
 app.listen(5000, '0.0.0.0', () => {
   console.log('Server running on 0.0.0.0:5000');
 });
