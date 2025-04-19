@@ -66,16 +66,37 @@ apiRouter.post('/login', (req, res) => {
 //  Register
 apiRouter.post('/register', (req, res) => {
   const { name, email, password } = req.body;
+  console.log('Incoming registration:', { name, email });
+
   db.get('SELECT * FROM users WHERE email = ?', [email], (err, user) => {
-    if (user) return res.status(409).json({ message: 'Email is already registered.' });
+    if (err) {
+      console.error('[DB ERROR - SELECT]', err);
+      return res.status(500).json({ message: 'Database error during lookup.' });
+    }
+    if (user) {
+      console.warn('[REGISTRATION] Email already in use:', email);
+      return res.status(409).json({ message: 'Email is already registered.' });
+    }
+
     bcrypt.hash(password, 10, (err, hash) => {
+      if (err) {
+        console.error('[BCRYPT ERROR]', err);
+        return res.status(500).json({ message: 'Password hashing failed.' });
+      }
+
       db.run('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, hash], err => {
-        if (err) return res.status(500).json({ message: 'Registration error.' });
+        if (err) {
+          console.error('[DB ERROR - INSERT]', err);  // <-- THIS is the one you're probably hitting
+          return res.status(500).json({ message: 'Registration error.' });
+        }
+
+        console.log('[REGISTRATION SUCCESSFUL]', email);
         res.status(201).json({ message: 'Registration successful.' });
       });
     });
   });
 });
+
 
 //  Get Movies from TMDb API — handled client-side; no DB movies route needed here
 
