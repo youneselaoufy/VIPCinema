@@ -192,12 +192,7 @@ apiRouter.put('/update-profile', verifyToken, (req, res) => {
 // Mount API routes first
 app.use('/VIPCinema/api', apiRouter);
 
-// Serve static files (like HTML, CSS, JS, images)
-app.use('/VIPCinema', express.static(__dirname));
-// Mount API routes first
-app.use('/VIPCinema/api', apiRouter);
-
-// Serve static files (HTML, CSS, JS, images) from the root directory
+// Serve static files (HTML, CSS, JS, media)
 app.use('/VIPCinema', express.static(path.join(__dirname)));
 
 // Route: direct access to /VIPCinema/ returns index.html
@@ -209,7 +204,6 @@ app.get('/VIPCinema/', (req, res) => {
 app.get('/VIPCinema/:page', (req, res) => {
   const file = req.params.page;
   const fullPath = path.join(__dirname, file);
-
   if (file.endsWith('.html') && fs.existsSync(fullPath)) {
     res.sendFile(fullPath);
   } else {
@@ -217,32 +211,12 @@ app.get('/VIPCinema/:page', (req, res) => {
   }
 });
 
-// Prevent "Cannot GET /" at root by returning a basic message
+// Optional: Handle root to avoid confusion
 app.get('/', (req, res) => {
-  res.send('Root is not used. Try /VIPCinema/');
+  res.send('Visit /VIPCinema/ to access the app.');
 });
 
-// Start the server
-app.listen(5000, '0.0.0.0', () => {
-  console.log('Server running on 0.0.0.0:5000');
-});
 
-// Direct access to /VIPCinema/ returns index.html
-app.get('/VIPCinema/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-
-// Serve other .html pages explicitly (like signup.html, profile.html)
-app.get('/VIPCinema/:page', (req, res) => {
-  const file = req.params.page;
-  if (file.endsWith('.html')) {
-    res.sendFile(path.join(__dirname, file));
-  } else {
-    res.status(404).send('Page Not Found');
-  }
-});
-
-// Start the server
 app.listen(5000, '0.0.0.0', () => {
   console.log('Server running on 0.0.0.0:5000');
 });
