@@ -189,39 +189,30 @@ apiRouter.put('/update-profile', verifyToken, (req, res) => {
     updateUser();
   }
 });
-// 1. Mount API first
+// Mount API first
 app.use('/VIPCinema/api', apiRouter);
 
-// 2. Serve static files from the current directory under /VIPCinema
+// Serve static files from root directory under /VIPCinema
 app.use('/VIPCinema', express.static(__dirname));
 
-// 3. Redirect /VIPCinema (no slash) to /VIPCinema/
-app.get('/VIPCinema', (req, res) => {
-  res.redirect('/VIPCinema/');
-});
-
-// 4. Serve index.html when visiting /VIPCinema/
+// Serve index.html when hitting /VIPCinema/
 app.get('/VIPCinema/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// 5. Serve any other HTML page in the same folder
+// Serve other .html pages in /VIPCinema/:page
 app.get('/VIPCinema/:page', (req, res) => {
   const file = req.params.page;
-  const fullPath = path.join(__dirname, file);
-  if (file.endsWith('.html') && fs.existsSync(fullPath)) {
-    res.sendFile(fullPath);
+
+  if (file.endsWith('.html') && fs.existsSync(path.join(__dirname, file))) {
+    res.sendFile(path.join(__dirname, file));
   } else {
     res.status(404).send('Page Not Found');
   }
 });
 
-// 6. Handle root `/` to prevent "Cannot GET /"
-app.get('/', (req, res) => {
-  res.send('Root is not used. Try /VIPCinema/');
-});
 
-// 7. Start the server
+//  Start the server
 app.listen(5000, '0.0.0.0', () => {
   console.log('Server running on 0.0.0.0:5000');
 });
