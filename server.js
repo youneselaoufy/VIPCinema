@@ -167,7 +167,7 @@ apiRouter.get('/', (req, res) => {
 app.use('/VIPCinema/api', apiRouter);
 
 // Serve static files from project root
-app.use('/VIPCinema', express.static(path.join(__dirname)));
+app.use('/VIPCinema', express.static(__dirname, { extensions: ['html', 'css', 'js', 'png', 'jpg', 'jpeg', 'svg'] }));
 
 // Handle root path forwarded by Nginx
 //app.get('/', (req, res) => {
