@@ -163,13 +163,16 @@ apiRouter.get('/', (req, res) => {
 
 // ---- MOUNT & ROUTING ----
 
-// Mount all API routes at /VIPCinema/api
+// Mount API first
 app.use('/VIPCinema/api', apiRouter);
 
+// ✅ Static assets by folder
 app.use('/VIPCinema/media', express.static(path.join(__dirname, 'media')));
 app.use('/VIPCinema/js', express.static(path.join(__dirname, 'js')));
 app.use('/VIPCinema/style', express.static(path.join(__dirname, 'style')));
-app.use('/VIPCinema', express.static(__dirname)); // ✅ this goes LAST
+app.use('/VIPCinema/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/VIPCinema', express.static(path.join(__dirname))); // ✅ safe fallback at the end, only after others
+
 
 // Handle root path forwarded by Nginx
 //app.get('/', (req, res) => {
