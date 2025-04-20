@@ -3,8 +3,9 @@ const token = sessionStorage.getItem('token');
 const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
 const BASE_API_URL = isLocal ? 'http://localhost:5000/VIPCinema/api' : '/VIPCinema/api';
 
-const STATIC_URL = isLocal ? 'http://localhost:5000' : '';
-
+const STATIC_URL = isLocal
+  ? 'http://localhost:5000/VIPCinema'
+  : '/VIPCinema';
 // ========== GLOBAL FUNCTIONS ==========
 function watchTrailer(trailerKey) {
   if (!trailerKey) return alert("Aucune bande-annonce disponible.");
