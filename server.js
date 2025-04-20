@@ -170,9 +170,9 @@ app.use('/VIPCinema/api', apiRouter);
 app.use('/VIPCinema', express.static(path.join(__dirname)));
 
 // Handle root path forwarded by Nginx
-app.get('/', (req, res) => {
-  res.redirect('/VIPCinema/');
-});
+//app.get('/', (req, res) => {
+  //res.redirect('/VIPCinema/');
+//});
 
 // Serve other .html files
 app.get('/VIPCinema/:page', (req, res) => {
