@@ -166,11 +166,7 @@ apiRouter.get('/', (req, res) => {
 // Mount API first
 app.use('/VIPCinema/api', apiRouter);
 
-// ✅ Static assets by folder
-app.use('/VIPCinema/media', express.static(path.join(__dirname, 'media')));
-app.use('/VIPCinema/js', express.static(path.join(__dirname, 'js')));
-app.use('/VIPCinema/style', express.static(path.join(__dirname, 'style')));
-app.use('/VIPCinema/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.use('/VIPCinema', express.static(path.join(__dirname))); // ✅ safe fallback at the end, only after others
 
 
