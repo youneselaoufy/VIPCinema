@@ -156,6 +156,10 @@ apiRouter.put('/update-profile', verifyToken, (req, res) => {
     updateUser();
   }
 });
+apiRouter.get('/', (req, res) => {
+  res.send('API is working!');
+});
+
 
 // ---- MOUNT & ROUTING ----
 
