@@ -166,14 +166,10 @@ apiRouter.get('/', (req, res) => {
 // Mount all API routes at /VIPCinema/api
 app.use('/VIPCinema/api', apiRouter);
 
-// Serve /media files under /VIPCinema/media/
 app.use('/VIPCinema/media', express.static(path.join(__dirname, 'media')));
-
-// Serve /js files under /VIPCinema/js/
 app.use('/VIPCinema/js', express.static(path.join(__dirname, 'js')));
-// Serve /style files under /VIPCinema/style/
 app.use('/VIPCinema/style', express.static(path.join(__dirname, 'style')));
-
+app.use('/VIPCinema', express.static(__dirname)); // ✅ this goes LAST
 
 // Handle root path forwarded by Nginx
 //app.get('/', (req, res) => {
