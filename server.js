@@ -156,23 +156,31 @@ apiRouter.put('/update-profile', verifyToken, (req, res) => {
     updateUser();
   }
 });
-// Mount API routes
-app.use('/VIPCinema/api', require('./api')); // Adjust if your API file is different
+apiRouter.get('/', (req, res) => {
+  res.send('API is working!');
+});
 
-// ✅ Serve subfolders first — VERY important
+
+// ---- MOUNT & ROUTING ----
+
+// Mount all API routes at /VIPCinema/api
+app.use('/VIPCinema/api', apiRouter);
+
 app.use('/VIPCinema/media', express.static(path.join(__dirname, 'media')));
 app.use('/VIPCinema/js', express.static(path.join(__dirname, 'js')));
 app.use('/VIPCinema/style', express.static(path.join(__dirname, 'style')));
+app.use('/VIPCinema', express.static(__dirname)); // ✅ this goes LAST
 
-// ✅ Serve main static files (like style.css or index.html)
-app.use('/VIPCinema', express.static(__dirname));
-
-// ✅ Serve index.html if hitting root (e.g. from nginx)
+// Handle root path forwarded by Nginx
+//app.get('/', (req, res) => {
+  //res.redirect('/VIPCinema/');
+//});
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// ✅ Only serve valid .html files in VIPCinema route
+
+// Serve other .html files
 app.get('/VIPCinema/:page', (req, res) => {
   const file = req.params.page;
   const fullPath = path.join(__dirname, file);
