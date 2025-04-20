@@ -173,6 +173,10 @@ app.use('/VIPCinema', express.static(path.join(__dirname)));
 //app.get('/', (req, res) => {
   //res.redirect('/VIPCinema/');
 //});
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 
 // Serve other .html files
 app.get('/VIPCinema/:page', (req, res) => {
