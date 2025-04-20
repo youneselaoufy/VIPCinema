@@ -166,9 +166,6 @@ apiRouter.get('/', (req, res) => {
 // Mount all API routes at /VIPCinema/api
 app.use('/VIPCinema/api', apiRouter);
 
-// Serve root-level static files (like style.css, index.html, etc.)
-app.use('/VIPCinema', express.static(path.join(__dirname)));
-
 // Serve /media files under /VIPCinema/media/
 app.use('/VIPCinema/media', express.static(path.join(__dirname, 'media')));
 
