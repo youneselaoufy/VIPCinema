@@ -169,9 +169,9 @@ app.use('/VIPCinema/api', apiRouter);
 // Serve static files from project root
 app.use('/VIPCinema', express.static(path.join(__dirname)));
 
-// Serve index.html at /VIPCinema/
-app.get('/VIPCinema/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+// Handle root path forwarded by Nginx
+app.get('/', (req, res) => {
+  res.redirect('/VIPCinema/');
 });
 
 // Serve other .html files
