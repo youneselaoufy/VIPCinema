@@ -18,8 +18,7 @@ app.use(express.json());
 const db = new sqlite3.Database('./database.db');
 
 // Serve uploads
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
+app.use('/VIPCinema/uploads', express.static(path.join(__dirname, 'uploads')));
 // JWT Middleware
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
