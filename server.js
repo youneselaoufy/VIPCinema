@@ -174,6 +174,9 @@ app.use('/VIPCinema/media', express.static(path.join(__dirname, 'media')));
 
 // Serve /js files under /VIPCinema/js/
 app.use('/VIPCinema/js', express.static(path.join(__dirname, 'js')));
+// Serve /style files under /VIPCinema/style/
+app.use('/VIPCinema/style', express.static(path.join(__dirname, 'style')));
+
 
 // Handle root path forwarded by Nginx
 //app.get('/', (req, res) => {
