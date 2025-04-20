@@ -126,5 +126,17 @@
       width: 60px;
     }
   }
+  /* Mobile: hide the background video, show a fallback image */
+@media (pointer: coarse) {
+    .video-container {
+      display: none;
+    }
+  
+    body {
+      background: url('media/profile.png') center center / cover no-repeat;
+      background-attachment: fixed;
+    }
+  }
+  
   
   

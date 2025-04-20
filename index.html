@@ -25,10 +25,21 @@
 
     <!-- Vidéo de fond -->
     <div class="video-container">
-        <video id="background-video" autoplay muted>
-            <source src="media/videowebsite.mp4" type="video/mp4">
-            Votre navigateur ne supporte pas les vidéos.
-        </video>
+        <div class="video-container">
+            <video 
+              id="background-video" 
+              autoplay 
+              muted 
+              loop 
+              playsinline 
+              webkit-playsinline 
+              preload="auto"
+            >
+              <source src="media/videowebsite.mp4" type="video/mp4">
+              Votre navigateur ne supporte pas les vidéos.
+            </video>
+          </div>
+          
     </div>
 
     <!-- Image qui apparaît après la transition (John Wick) -->
