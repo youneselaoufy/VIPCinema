@@ -166,8 +166,14 @@ apiRouter.get('/', (req, res) => {
 // Mount all API routes at /VIPCinema/api
 app.use('/VIPCinema/api', apiRouter);
 
-// Serve static files from project root
-app.use('/VIPCinema', express.static(__dirname, { extensions: ['html', 'css', 'js', 'png', 'jpg', 'jpeg', 'svg'] }));
+// Serve root-level static files (like style.css, index.html, etc.)
+app.use('/VIPCinema', express.static(path.join(__dirname)));
+
+// Serve /media files under /VIPCinema/media/
+app.use('/VIPCinema/media', express.static(path.join(__dirname, 'media')));
+
+// Serve /js files under /VIPCinema/js/
+app.use('/VIPCinema/js', express.static(path.join(__dirname, 'js')));
 
 // Handle root path forwarded by Nginx
 //app.get('/', (req, res) => {
